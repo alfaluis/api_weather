@@ -1,0 +1,3 @@
+city.list.json/*
+!city.list.json/.gitkeep
+.idea/*
