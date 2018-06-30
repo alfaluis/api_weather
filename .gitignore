@@ -1,3 +1,5 @@
 city.list.json/*
 !city.list.json/.gitkeep
 .idea/*
+semana-14/*
+test.py

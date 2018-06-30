@@ -15,7 +15,10 @@ def retornar_json():
 def recibir_parametros():
     # /parametros?username=herny
     username = flask.request.args.get('username')
-    return json.dumps({"USUARIO": username})
+    age = flask.request.args.get('age')
+    print(type(age))
+    return json.dumps({
+        "USUARIO": username, 'AGE': age})
 
 if __name__ == "__main__":
    app.run()
