@@ -3,8 +3,20 @@ from flask import Flask, redirect, url_for, request, render_template
 from api_weather.read_json_file import load_city_list, get_matched_cities
 from api_weather.request_open_weather_map import url_builder, data_fetch
 import json
+import re
 app = Flask(__name__)
 
+
+def is_valid_mail(email):
+    # Recordar que el método 'match()' retorna un objeto de tipo 'Match' que al ser
+    # usado en sentencias como IF y WHILE representa un valor lógico. Podemos hacer
+    # que una función retorne un valor lógico de la operación de match haciendo la
+    # conversión a bool.
+    #
+    # Otra forma de escribir el patrón es:
+    # pattern = "[a-zA-Z0-9_.]+@((seccion1|seccion2)\.)?(mi)?mail.cl"
+    pattern = "[a-zA-Z0-9_.]+@((seccion1|seccion2)\.)?(gmail|mail).(cl|com)"
+    return bool(re.match(pattern, email))
 
 @app.route('/')
 def index():
@@ -13,7 +25,7 @@ def index():
 
 @app.route('/success/<name>')
 def success(name):
-    return render_template('sucess.html')
+    return render_template('success.html')
 
 
 @app.route('/getcity', methods=['POST'])
@@ -38,7 +50,7 @@ def get_weather():
         info = data_fetch(full_api_url=urls)
         print(info[0])
         with open(os.path.join(os.getcwd(), city['name']) + '.txt', 'w') as file:
-            file.write(str(info[0]['weather'][0]["description"]))
+            file.write(str(info[1]['weather'][0]["description"]))
             file.write('\n')
             file.write(str(info[0]["main"]["temp"]))
             file.write('\n')
@@ -61,7 +73,11 @@ def login():
     email = request.form['email']
     if email == '':
         raise ValueError
-    return redirect(url_for('success', name=email))
+    if not is_valid_mail(email):
+        return render_template('index_error.html')
+    else:
+        return redirect(url_for('success', name=email))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
