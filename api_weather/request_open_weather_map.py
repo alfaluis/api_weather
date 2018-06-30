@@ -3,14 +3,6 @@ import json
 import urllib.request
 import requests
 
-# Esta url contiene la dirección del web service y los parámetros que se requiren para la consulta.
-url = 'https://api.github.com/repos/IIC2233/Syllabus/issues/716'
-response = requests.get(url, params=None)
-
-# El output de esta respuesta particular puede ser parseada a JSON
-print('Status: {}'.format(response.status_code))
-print(response.json()['body'])
-
 
 def url_builder(city_id, lat, lon, unit='metric', mode='json'):
     # For Fahrenheit use imperial, for Celsius use metric, and the default is Kelvin.
