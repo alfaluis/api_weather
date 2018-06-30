@@ -6,7 +6,7 @@ database = os.path.join(root, 'city.list.json')
 
 
 def load_city_list():
-    with open(os.path.join(database, 'city_list.json'), 'r',encoding="utf8") as file:
+    with open(os.path.join(database, 'city.list.json'), 'r', encoding="utf8") as file:
         json_data = file.read()
         full_data = json.loads(json_data)
     return full_data
