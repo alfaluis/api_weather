@@ -36,23 +36,32 @@ def get_weather():
     for city in cities_asked:
         urls = url_builder(city_id=city['id'], lat=city['coord']['lat'], lon=city['coord']['lon'])
         info = data_fetch(full_api_url=urls)
+        print(info[0])
         with open(os.path.join(os.getcwd(), city['name']) + '.txt', 'w') as file:
-            file.write(str(info[0]['weather']))
+            file.write(str(info[0]['weather'][0]["description"]))
+            file.write('\n')
+            file.write(str(info[0]["main"]["temp"]))
+            file.write('\n')
+            file.write(str(info[0]["main"]["pressure"]))
+            file.write('\n')
+            file.write(str(info[0]["main"]["humidity"]))
+            file.write('\n')
+            file.write(str(info[0]["main"]["temp_min"]))
+            file.write('\n')
+            file.write(str(info[0]["main"]["temp_max"]))
+            file.write('\n')
+            file.write(str(info[0]["wind"]["speed"]))
+            file.write('\n')
+            file.write(str(info[0]["clouds"]["all"]))
     return json.dumps({"USUARIO": info[0], 'FORE': info[2]})
 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    if request.method == 'POST':
-        param = request.form['param']
-        email = request.form['email']
-        if email == '':
-            raise ValueError
-        return redirect(url_for('success', name=email))
-    else:
-        user = request.args.get('id')
-        country = request.form['country']
-        return redirect(url_for('success', name=user))
+    email = request.form['email']
+    if email == '':
+        raise ValueError
+    return redirect(url_for('success', name=email))
 
 if __name__ == '__main__':
     app.run(debug=True)
