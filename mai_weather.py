@@ -50,7 +50,7 @@ def get_weather():
         info = data_fetch(full_api_url=urls)
         print(info[0])
         with open(os.path.join(os.getcwd(), city['name']) + '.txt', 'w') as file:
-            file.write(str(info[1]['weather'][0]["description"]))
+            file.write(str(info[0]['weather'][0]["description"]))
             file.write('\n')
             file.write(str(info[0]["main"]["temp"]))
             file.write('\n')
@@ -73,10 +73,7 @@ def login():
     email = request.form['email']
     if email == '':
         raise ValueError
-    if not is_valid_mail(email):
-        return render_template('index_error.html')
-    else:
-        return redirect(url_for('success', name=email))
+    return redirect(url_for('success', name=email))
 
 
 if __name__ == '__main__':
